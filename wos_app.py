@@ -43,10 +43,9 @@ def process_input():
     op_relation = '(' + '|'.join(['>=', '<=', '>', '<', '=']) + ')'
     keys = ['IF-2023', 'IF-5Y', 'Quarter']
     logic = re.findall(r'(AND|OR)', cmd)
-    log = ''
     if len(logic) > 1:
         # raise RuntimeError('只能输入一个逻辑连结词！')
-        log += '\n只能输入一个逻辑连结词！'
+        log = '只能输入一个逻辑连结词！'
         res = ''
         return jsonify({"result": res, "log": log})
     if len(logic) == 1:
@@ -59,7 +58,7 @@ def process_input():
         op = re.findall(op_relation, statement)
         if len(op) > 1:
             # raise RuntimeError('非法逻辑表达式！')
-            log += '\n非法逻辑表达式！'
+            log = '非法逻辑表达式！'
             res = ''
             return jsonify({"result": res, "log": log})
         op = op[0]
@@ -67,20 +66,19 @@ def process_input():
         parts = [each.strip() for each in statement.split(op)]
         if len(parts) != 2:
             # raise RuntimeError('非法逻辑表达式！')
-            log += '\n非法逻辑表达式！'
+            log = '非法逻辑表达式！'
             res = ''
             return jsonify({"result": res, "log": log})
         if parts[0] not in keys:
             # raise RuntimeError('关系操作符左侧应为IF-2023或IF-5Y或Quarter')
-            log += '\n关系操作符左侧应为IF-2023或IF-5Y或Quarter'
+            log = '关系操作符左侧应为IF-2023或IF-5Y或Quarter'
             res = ''
             return jsonify({"result": res, "log": log})
         cond['key'] = parts[0]
         cond['val'] = parts[1]
         conditions.append(cond)
     # print(conditions)
-    res, log_ = extract(conditions, logic)
-    log += log_
+    res, log = extract(conditions, logic)
 
     return jsonify({"result": res, "log": log})
 
