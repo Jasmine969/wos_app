@@ -75,10 +75,11 @@ def process_input():
             res = ''
             return jsonify({"result": res, "log": log})
         cond['key'] = parts[0]
-        if cond['key'] == 'Quarter' and parts[1] not in ['Q1', 'Q2', 'Q3', 'Q4']:
-            log = '当筛选项目为Quarter时，关系符右侧只能为Q1/Q2/Q3/Q4！'
-            res = ''
-            return jsonify({"result": res, "log": log})
+        if cond['key'] == 'Quarter':
+            if parts[1] not in ['Q1', 'Q2', 'Q3', 'Q4']:
+                log = '当筛选项目为Quarter时，关系符右侧只能为Q1/Q2/Q3/Q4！'
+                res = ''
+                return jsonify({"result": res, "log": log})
         else:
             try:
                 _ = float(parts[1])
