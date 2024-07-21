@@ -71,15 +71,26 @@ def process_input():
             return jsonify({"result": res, "log": log})
         if parts[0] not in keys:
             # raise RuntimeError('关系操作符左侧应为IF-2023或IF-5Y或Quarter')
-            log = '关系操作符左侧应为IF-2023或IF-5Y或Quarter'
+            log = '关系操作符左侧应为IF-2023或IF-5Y或Quarter！'
             res = ''
             return jsonify({"result": res, "log": log})
         cond['key'] = parts[0]
+        if cond['key'] == 'Quarter' and parts[1] not in ['Q1', 'Q2', 'Q3', 'Q4']:
+            log = '当筛选项目为Quarter时，关系符右侧只能为Q1/Q2/Q3/Q4！'
+            res = ''
+            return jsonify({"result": res, "log": log})
+        else:
+            try:
+                _ = float(parts[1])
+            except ValueError:
+                log = '关系符右侧的影响因子值有误！'
+                res = ''
+                return jsonify({"result": res, "log": log})
         cond['val'] = parts[1]
         conditions.append(cond)
-    # print(conditions)
+    print(conditions)
     res, log = extract(conditions, logic)
-
+    print('成功了')
     return jsonify({"result": res, "log": log})
 
 
