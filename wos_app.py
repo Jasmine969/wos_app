@@ -56,7 +56,7 @@ def process_input():
     for statement in statements:
         cond = dict()
         op = re.findall(op_relation, statement)
-        if len(op) > 1:
+        if len(op) != 1:
             # raise RuntimeError('非法逻辑表达式！')
             log = '非法逻辑表达式！'
             res = ''
